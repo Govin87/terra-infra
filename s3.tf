@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "govtest-cleo-test1"
+  bucket = "govtest-cleo-test2"
 
   lifecycle {
     prevent_destroy = true

@@ -1,6 +1,3 @@
-provider "aws" {
-  region = "us-west-2"
-}
 
 # Fetch existing S3 bucket (if it exists)
 data "aws_s3_bucket" "existing" {

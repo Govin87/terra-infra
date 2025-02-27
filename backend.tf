@@ -1,6 +1,6 @@
 terraform {
   backend "s3"{
-    bucket         = "s3terrafomaws"
+    bucket         = "govtest-cleo-test"
     key            = "terraform.tfstate"
     region         = "us-west-2"
     encrypt        = true

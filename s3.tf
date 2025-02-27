@@ -1,6 +1,16 @@
-# Create the S3 bucket for Terraform state storage
+provider "aws" {
+  region = "us-west-2"
+}
+
+# Fetch existing S3 bucket (if it exists)
+data "aws_s3_bucket" "existing" {
+  bucket = govtest-cleo-test1 
+}
+
+# Create S3 bucket only if it does not exist
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "govtest-cleo-test1"  # Change this to your actual bucket name
+  count  = length(data.aws_s3_bucket.existing.id) > 0 ? 0 : 1
+  bucket = govtest-cleo-test1
 
   lifecycle {
     prevent_destroy = true
@@ -12,18 +22,6 @@ resource "aws_s3_bucket" "terraform_state" {
 
   tags = {
     Name = "Terraform State Bucket"
-  }
-}
-
-# Optional: DynamoDB table for Terraform state locking
-resource "aws_dynamodb_table" "terraform_lock" {
-  name         = "terraform-lock"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
   }
 }
 

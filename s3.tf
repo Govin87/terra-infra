@@ -1,9 +1,6 @@
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "govtest-cleo-test2"
 
-  lifecycle {
-    prevent_destroy = true
-  }
 
   tags = {
     Name = "Terraform State Bucket"

@@ -1,41 +1,47 @@
-provider "aws" {
-  region = "us-west-2"
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
 }
-module "s3" {
-  source = "./modules/s3"
+
+provider "aws" {
+  region = var.aws_region
+}
+
+module "lambda" {
+  source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/lambda?ref=main"
 }
 
 module "api_gateway" {
-  source  = "./modules/api_gateway"
+  source            = "git::https://github.com/Govin87/terra-infra-mods.git//modules/api_gateway?ref=main"
   lambda_invoke_arn = module.lambda.lambda_invoke_arn
 }
 
-module "amazon_connect" {
-  source         = "./modules/amazon_connect"
-  instance_alias = "my-connect-instance"
-}
-
-
-module "lambda" {
-  source = "./modules/lambda"
-}
-
-module "dynamodb1" {
-  source = "./modules/dynamodb"
-  table_name = "Table1"
-}
-
-module "dynamodb2" {
-  source = "./modules/dynamodb"
-  table_name = "Table2"
-}
-
-module "observability" {
-  source = "./modules/observability"
-}
-
-
 module "cloudfront" {
-  source = "./modules/cloudfront"
+  source                = "git::https://github.com/Govin87/terra-infra-mods.git//modules/cloudfront?ref=main"
   s3_bucket_domain_name = module.s3.bucket_regional_domain_name
 }
+
+module "s3" {
+  source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/s3?ref=main"
+}
+
+module "dynamodb" {
+  source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/dynamodb?ref=main"
+}
+
+module "amazon_connect" {
+  source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/amazon_connect?ref=main"
+}
+
+module "xray" {
+  source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/monitoring/xray?ref=main"
+}
+
+module "cloudwatch" {
+  source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/monitoring/cloudwatch?ref=main"
+}
+

@@ -31,6 +31,7 @@ module "s3" {
 
 module "dynamodb" {
   source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/dynamodb?ref=main"
+  table_name = "my-dynamodb-table"
 }
 
 module "amazon_connect" {

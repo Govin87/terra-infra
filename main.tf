@@ -38,7 +38,7 @@ module "amazon_connect" {
 }
 
 module "xray" {
-  source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/observability/xray?ref=main"
+  source = "git::https://github.com/Govin87/terra-infra-mods.git//modules/monitoring/xray?ref=main"
 }
 
 module "cloudwatch" {
